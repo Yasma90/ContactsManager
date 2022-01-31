@@ -4,18 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using ContactsManager.Domain.Models;
 using ContactsManager.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web.Resource;
 
 namespace ContactsManager.API.Controllers
 {
-    [Route("api/[controller]")]
+    //[Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class ContactsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ContactsController> _logger;
+        // The Web API will only accept tokens 1) for users, and 2) having the "access_as_user" scope for this API
+        //static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
 
         public ContactsController(IUnitOfWork unitOfWork, ILogger<ContactsController> logger)
         {
@@ -27,6 +32,7 @@ namespace ContactsManager.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacs()
         {
+            //HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             return await _unitOfWork.ContactRepository.GetAllAsync();
         }
 
@@ -61,7 +67,7 @@ namespace ContactsManager.API.Controllers
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!Exist(id))
+                if (!_unitOfWork.ContactRepository.Exist(id))
                 {
                     _logger.LogError($"Update function error: Contact don't exist.");
                     return NotFound();
@@ -80,12 +86,12 @@ namespace ContactsManager.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
-            if (ExistEmail(contact.Email))
+            if (_unitOfWork.ContactRepository.ExistEmail(contact.Email))
             {
                 _logger.LogError("Exist the email.");
                 throw new Exception("Exist the email.");
             }
-            if (Younger18(contact.DateOfBirth))
+            if (_unitOfWork.ContactRepository.Younger18(contact.DateOfBirth))
             {
                 _logger.LogError("Contact have less of 18 years old.");
                 throw new Exception("Contact have less of 18 years old.");
@@ -116,15 +122,5 @@ namespace ContactsManager.API.Controllers
             return NoContent();
         }
 
-        #region Help Methods
-
-        private bool Exist(Guid id) => _unitOfWork.ContactRepository.GetbyIdAsync(id).Result != null;
-
-        private bool ExistEmail(string email) => _unitOfWork.ContactRepository.GetAsync(c => c.Email == email).Result
-                                                    .FirstOrDefault() != null;
-
-        private bool Younger18(DateTime date) => (DateTime.Now - date).Days / 365 < 18;
-
-        #endregion
     }
 }

@@ -16,5 +16,11 @@ namespace ContactsManager.Persistence.Repository
         {
         }
 
+        public bool Exist(Guid id) => GetbyIdAsync(id).Result != null;
+
+        public bool ExistEmail(string email) => GetAsync(c => c.Email == email).Result.FirstOrDefault() != null;
+
+        public bool Younger18(DateTime date) => (DateTime.Now - date).Days / 365 < 18;
+
     }
 }
