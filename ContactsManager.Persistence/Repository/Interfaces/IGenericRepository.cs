@@ -5,18 +5,18 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactsManager.Persistence.Repository
+namespace ContactsManager.Persistence.Repository.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
         Task<List<T>> GetAllAsync();
-        Task<T> GetbyIdAsync(int Id);
+        Task<T> GetbyIdAsync(Guid Id);
         Task<List<T>> GetAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> AddAsync(T entity);
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
         T Update(T entity);
         IEnumerable<T> UpdateRange(IEnumerable<T> entities);
-        Task<T> DeleteAsync(int id);
+        Task<T> DeleteAsync(Guid id);
         IEnumerable<T> DeleteRange(IEnumerable<T> entities);
     }
 }

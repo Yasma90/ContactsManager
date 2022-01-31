@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
+using ContactsManager.Persistence.ContextDb;
+using ContactsManager.Persistence.Repository.Interfaces;
+
 namespace ContactsManager.Persistence.Repository
 {
     public abstract class GenericRepository<T> : IGenericRepository<T>, IDisposable

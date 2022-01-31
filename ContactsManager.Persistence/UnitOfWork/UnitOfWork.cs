@@ -1,22 +1,25 @@
-﻿using ContactsManager.Persistence.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ContactsManager.Persistence.ContextDb;
+using ContactsManager.Persistence.Repository;
+using ContactsManager.Persistence.Repository.Interfaces;
+
 namespace ContactsManager.Persistence
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         public readonly ContactsDbContext _context;
-        public ContactRepository Contacts { get; set; }
+        public IContactRepository ContactRepository { get; set; }
         private bool disposedValue;
 
-        public UnitOfWork(ContactsDbContext context, ContactRepository contactRepository)
+        public UnitOfWork(ContactsDbContext context, IContactRepository contactRepository)
         {
             _context = context;
-            Contacts = contactRepository; ;
+            ContactRepository = contactRepository;
         }
         
         public async Task<int> SaveChangesAsync()

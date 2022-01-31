@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactsManager.Domaine.Models
+namespace ContactsManager.Domain.Models
 {
     public class User: IdentityUser
     {
@@ -16,19 +16,22 @@ namespace ContactsManager.Domaine.Models
 
         [Required]
         [MaxLength(128, ErrorMessage = "")]
-        [Column(TypeName = "nvarchar(128)")]
+        //[Column(TypeName = "nvarchar(128)")]
         public string FirstName { get; set; } 
 
         [Required]
-        [Column(TypeName = "nvarchar(128)")]
+        [MaxLength(128, ErrorMessage ="")]
+        //[Column(TypeName = "nvarchar(128)")]
         public string LastName { get; set; } 
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60, ErrorMessage = "")]
+        //[Column(TypeName = "nvarchar(60)")]
         public string Username { get; set; } 
 
         [Required]
-        [Column(TypeName = "nvarchar(256)")]
+        [MaxLength(256, ErrorMessage = "")]
+        //[Column(TypeName = "nvarchar(256)")]
         public string Password { get; set; } 
     }
 }

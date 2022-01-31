@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManager.API", "ContactsManager.API\ContactsManager.API.csproj", "{0DD80654-06C1-4E1C-B89D-47B82190BA16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManager.API", "ContactsManager.API\ContactsManager.API.csproj", "{0DD80654-06C1-4E1C-B89D-47B82190BA16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManager.Domaine", "ContactsManager.Domaine\ContactsManager.Domaine.csproj", "{C11D26FA-97B5-4A54-B83B-F3531FAEDA53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManager.Domain", "ContactsManager.Domain\ContactsManager.Domain.csproj", "{C11D26FA-97B5-4A54-B83B-F3531FAEDA53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManager.Infrastructure", "ContactsManager.Infrastructure\ContactsManager.Infrastructure.csproj", "{BF527670-069E-4FEF-A33D-DD6DEB6C81A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManager.Infrastructure", "ContactsManager.Infrastructure\ContactsManager.Infrastructure.csproj", "{BF527670-069E-4FEF-A33D-DD6DEB6C81A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManager.Persistence", "ContactsManager.Persistence\ContactsManager.Persistence.csproj", "{4D54BC52-75E0-413D-A00C-14B34ABCE774}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManager.Persistence", "ContactsManager.Persistence\ContactsManager.Persistence.csproj", "{4D54BC52-75E0-413D-A00C-14B34ABCE774}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

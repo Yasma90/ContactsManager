@@ -12,5 +12,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.13" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsManager.Persistence\ContactsManager.Persistence.csproj" />
+  </ItemGroup>
   
 </Project>

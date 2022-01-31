@@ -26,7 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ContactsManager.Domaine\ContactsManager.Domaine.csproj" />
+    <ProjectReference Include="..\ContactsManager.Domain\ContactsManager.Domain.csproj" />
+    <ProjectReference Include="..\ContactsManager.Infrastructure\ContactsManager.Infrastructure.csproj" />
     <ProjectReference Include="..\ContactsManager.Persistence\ContactsManager.Persistence.csproj" />
   </ItemGroup>
 

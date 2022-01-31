@@ -1,8 +1,8 @@
-﻿using ContactsManager.Domaine.Models;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
-using System;
+using ContactsManager.Domain.Models;
 
-namespace ContactsManager.Persistence
+namespace ContactsManager.Persistence.ContextDb
 {
     public class ContactsDbContext : DbContext
     {
@@ -10,8 +10,11 @@ namespace ContactsManager.Persistence
 
         public ContactsDbContext(DbContextOptions<ContactsDbContext> options)
         : base(options)
-        {
-        }
+        {}
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ContacstsDb;Trusted_Connection=true;MultipleActiveResultSets=true;")
+            .EnableSensitiveDataLogging(true);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,11 +1,11 @@
-﻿using ContactsManager.Domaine.Models;
+﻿using ContactsManager.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactsManager.Persistence.Repository
+namespace ContactsManager.Persistence.Repository.Interfaces
 {
     public interface IContactRepository: IGenericRepository<Contact>
     {
