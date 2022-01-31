@@ -1,3 +1,4 @@
+using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,10 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 using ContactsManager.Infrastructure.Extensions;
 using ContactsManager.Persistence;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
 
 namespace ContacsManager.API
 {
@@ -24,20 +25,14 @@ namespace ContacsManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContactsManager.API", Version = "v1" });
             });
 
-
             services.AddInfrastructure(Configuration.GetConnectionString("DbConnectionStr"));
-            
-            //services.AddDbContext<ApplicationDbContext>(builder =>
-            //    builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
-            //services.AddIdentity<User, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
 
         }
 
@@ -54,6 +49,15 @@ namespace ContacsManager.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            // custom jwt auth middleware
+            //app.UseMiddleware<JwtMiddleware>();
 
             //app.UseAuthentication();
             app.UseAuthorization();

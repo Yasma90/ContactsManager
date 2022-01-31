@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ContactsManager.Domain.Models
 {
-    public class User: IdentityUser
+    public class User //:IdentityUser<Guid>
     {
         [Key]
         public Guid Id { get; set; }

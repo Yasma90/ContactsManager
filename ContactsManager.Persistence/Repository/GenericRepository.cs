@@ -11,8 +11,9 @@ using ContactsManager.Persistence.Repository.Interfaces;
 
 namespace ContactsManager.Persistence.Repository
 {
-    public abstract class GenericRepository<T> : IGenericRepository<T>, IDisposable
+    public abstract class GenericRepository<T, TKey> : IGenericRepository<T, TKey>, IDisposable
         where T : class
+        where TKey : IEquatable<TKey>
     {
         private readonly ContactsDbContext _context;
         private readonly DbSet<T> _dbSet;
@@ -26,7 +27,7 @@ namespace ContactsManager.Persistence.Repository
 
         public virtual async Task<List<T>> GetAllAsync() => await _dbSet.ToListAsync();
 
-        public virtual async Task<T> GetbyIdAsync(Guid id) => await _dbSet.FindAsync(id);
+        public virtual async Task<T> GetbyIdAsync(TKey id) => await _dbSet.FindAsync(id);
 
         public async Task<List<T>> GetAsync(Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
@@ -70,7 +71,7 @@ namespace ContactsManager.Persistence.Repository
             return entities;
         }
 
-        public virtual async Task<T> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(TKey id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity == null)

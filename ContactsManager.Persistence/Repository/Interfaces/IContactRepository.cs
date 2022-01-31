@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ContactsManager.Persistence.Repository.Interfaces
 {
-    public interface IContactRepository : IGenericRepository<Contact>
+    public interface IContactRepository : IGenericRepository<Contact, Guid>
     {
         bool Exist(Guid id);
         bool ExistEmail(string email);

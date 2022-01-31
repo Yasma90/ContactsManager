@@ -10,7 +10,7 @@ using ContactsManager.Persistence.Repository.Interfaces;
 
 namespace ContactsManager.Persistence.Repository
 {
-    public class ContactRepository : GenericRepository<Contact>, IContactRepository
+    public class ContactRepository : GenericRepository<Contact, Guid>, IContactRepository
     {
         public ContactRepository(ContactsDbContext context) : base(context)
         {
