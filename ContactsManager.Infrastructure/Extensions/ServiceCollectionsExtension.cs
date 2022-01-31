@@ -18,10 +18,9 @@ namespace ContactsManager.Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<ContactsDbContext>();
-            //services.AddDbContext<ContactsDbContext>(opt => opt
-            //    .UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(ContactsDbContext)
-            //                              .GetTypeInfo().Assembly.GetName().Name)));
+            services.AddDbContext<ContactsDbContext>(opt => opt
+                .UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(ContactsDbContext)
+                                          .GetTypeInfo().Assembly.GetName().Name)));
             services.AddTransient<IContactRepository, ContactRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

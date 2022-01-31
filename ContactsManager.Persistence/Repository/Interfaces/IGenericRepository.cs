@@ -11,12 +11,12 @@ namespace ContactsManager.Persistence.Repository.Interfaces
     {
         Task<List<T>> GetAllAsync();
         Task<T> GetbyIdAsync(Guid Id);
-        Task<List<T>> GetAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> AddAsync(T entity);
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
         T Update(T entity);
         IEnumerable<T> UpdateRange(IEnumerable<T> entities);
         Task<T> DeleteAsync(Guid id);
         IEnumerable<T> DeleteRange(IEnumerable<T> entities);
+        Task<List<T>> GetAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
     }
 }

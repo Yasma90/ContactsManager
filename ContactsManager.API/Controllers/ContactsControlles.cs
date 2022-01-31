@@ -27,7 +27,7 @@ namespace ContactsManager.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacs()
         {
-            return await _unitOfWork.ContactRepository.GetAsync();
+            return await _unitOfWork.ContactRepository.GetAllAsync();
         }
 
         // GET: api/Contacts/5
@@ -80,7 +80,17 @@ namespace ContactsManager.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
-            if (!ModelState.IsValid)
+            if (ExistEmail(contact.Email))
+            {
+                _logger.LogError("Exist the email.");
+                throw new Exception("Exist the email.");
+            }
+            if (Younger18(contact.DateOfBirth))
+            {
+                _logger.LogError("Contact have less of 18 years old.");
+                throw new Exception("Contact have less of 18 years old.");
+            }
+            if (!ModelState.IsValid || contact.DateOfBirth >= DateTime.Now)
             {
                 return BadRequest();
             }
@@ -106,11 +116,15 @@ namespace ContactsManager.API.Controllers
             return NoContent();
         }
 
-        private bool Exist(Guid id)
-        {
-            return _unitOfWork.ContactRepository.GetbyIdAsync(id).Result != null;
-        }
+        #region Help Methods
 
+        private bool Exist(Guid id) => _unitOfWork.ContactRepository.GetbyIdAsync(id).Result != null;
 
+        private bool ExistEmail(string email) => _unitOfWork.ContactRepository.GetAsync(c => c.Email == email).Result
+                                                    .FirstOrDefault() != null;
+
+        private bool Younger18(DateTime date) => (DateTime.Now - date).Days / 365 < 18;
+
+        #endregion
     }
 }

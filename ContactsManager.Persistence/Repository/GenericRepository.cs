@@ -24,9 +24,9 @@ namespace ContactsManager.Persistence.Repository
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<List<T>> GetAllAsync() => await _dbSet.ToListAsync();
+        public virtual async Task<List<T>> GetAllAsync() => await _dbSet.ToListAsync();
 
-        public async Task<T> GetbyIdAsync(int id) => await _dbSet.FindAsync(id);
+        public virtual async Task<T> GetbyIdAsync(Guid id) => await _dbSet.FindAsync(id);
 
         public async Task<List<T>> GetAsync(Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
@@ -46,19 +46,31 @@ namespace ContactsManager.Persistence.Repository
             return orderBy != null ? await orderBy(query).ToListAsync() : await query.ToListAsync();
         }
 
-        public async Task<T> AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
             return entity;
         }
 
-        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        public virtual async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
         {
             await _dbSet.AddRangeAsync(entities);
             return entities;
         }
 
-        public async Task<T> DeleteAsync(int id)
+        public virtual T Update(T entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+            return entity;
+        }
+
+        public virtual IEnumerable<T> UpdateRange(IEnumerable<T> entities)
+        {
+            _dbSet.UpdateRange(entities);
+            return entities;
+        }
+
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity == null)
@@ -68,21 +80,9 @@ namespace ContactsManager.Persistence.Repository
             return entity;
         }
 
-        public IEnumerable<T> DeleteRange(IEnumerable<T> entities)
+        public virtual IEnumerable<T> DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
-            return entities;
-        }
-
-        public T Update(T entity)
-        {
-            _context.Entry(entity).State = EntityState.Modified;
-            return entity;
-        }
-
-        public IEnumerable<T> UpdateRange(IEnumerable<T> entities)
-        {
-            _dbSet.UpdateRange(entities);
             return entities;
         }
 

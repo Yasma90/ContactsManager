@@ -8,13 +8,11 @@ namespace ContactsManager.Persistence.ContextDb
     {
         public DbSet<Contact> Contacts { get; set; }
 
-        public ContactsDbContext(DbContextOptions<ContactsDbContext> options)
-        : base(options)
-        {}
+        public ContactsDbContext(DbContextOptions<ContactsDbContext> options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ContacstsDb;Trusted_Connection=true;MultipleActiveResultSets=true;")
-            .EnableSensitiveDataLogging(true);
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //    => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ContacstsDb;Trusted_Connection=true;MultipleActiveResultSets=true;")
+        //    .EnableSensitiveDataLogging(true);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

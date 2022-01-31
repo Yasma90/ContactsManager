@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ContactsManager.Infrastructure.Extensions;
 using ContactsManager.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 
 namespace ContacsManager.API
 {
@@ -25,31 +27,15 @@ namespace ContacsManager.API
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
-            //services.AddSingleton(_ =>
-            //{
-            //    var configure = new AppConfiguration();
-            //    Configuration.Bind(configure);
-
-            //    return configure;
-            //});
-            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContactsManager.API", Version = "v1" });
             });
 
-            //var connectionString = Configuration.GetSection("DbConnection")?.Value ?? string.Empty;
-            //var migrationsAssembly = typeof(ContactsDbContext).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddInfrastructure(Configuration.GetConnectionString("DbConnectionStr"));
-            //services.AddDbContext<ContactsDbContext>();
-            //services.AddDbContext<ContactsDbContext>(opt => opt
-            //    .UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(ContactsDbContext)
-            //                              .GetTypeInfo().Assembly.GetName().Name)));
-            //services.AddTransient</*IContactRepository, */ContactRepository>();
-            //services.AddTransient</*IUnitOfWork,*/ UnitOfWork>();
-
+            
             //services.AddDbContext<ApplicationDbContext>(builder =>
             //    builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
             //services.AddIdentity<User, IdentityRole>()
@@ -72,7 +58,7 @@ namespace ContacsManager.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
