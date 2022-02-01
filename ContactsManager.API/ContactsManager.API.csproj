@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.IdentityModel" Version="7.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.13" />

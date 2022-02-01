@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using ContactsManager.Infrastructure.Extensions;
 using ContactsManager.Persistence;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System;
 
 namespace ContacsManager.API
 {
@@ -34,6 +37,19 @@ namespace ContacsManager.API
 
             services.AddInfrastructure(Configuration.GetConnectionString("DbConnectionStr"));
             services.AddAuthInfrastructure(Configuration.GetConnectionString("DbConnectionAuth"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options=> {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

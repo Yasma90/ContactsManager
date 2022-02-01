@@ -20,8 +20,9 @@ namespace ContactsManager.Domain.Models
         [MaxLength(128)]
         public string LastName { get; set; }
 
-        [Required]
+        //[EmailAddress]
         [MaxLength(128)]
+        [Required]
         [RegularExpression(@"^([a-z]+[a-z1-9._-]*)@{1}([a-z1-9\.]{2,})\.([a-z]{2,3})$",
             ErrorMessage = "Incorrect Format Email.")]
         public string Email { get; set; }
@@ -31,6 +32,7 @@ namespace ContactsManager.Domain.Models
 
         [Required]
         [MaxLength(20)]
+        [Phone]
         public string Phone { get; set; }
 
         public Guid Owner { get; set; }
