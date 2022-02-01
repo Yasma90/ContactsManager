@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using ContactsManager.Persistence;
@@ -13,7 +13,6 @@ using ContactsManager.Persistence.ContextDb;
 using ContactsManager.Persistence.Repository;
 using ContactsManager.Persistence.Repository.Interfaces;
 using ContactsManager.Domain.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace ContactsManager.Infrastructure.Extensions
 {
@@ -30,10 +29,10 @@ namespace ContactsManager.Infrastructure.Extensions
             return services;
         }
 
-        public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddAuthInfrastructure(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<ApplicationDbContext>(builder =>
-                builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(typeof(ContactsDbContext)
+                builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(typeof(ApplicationDbContext)
                                           .GetTypeInfo().Assembly.GetName().Name)));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
