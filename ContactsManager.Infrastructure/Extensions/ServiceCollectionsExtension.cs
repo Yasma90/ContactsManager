@@ -13,6 +13,7 @@ using ContactsManager.Persistence.ContextDb;
 using ContactsManager.Persistence.Repository;
 using ContactsManager.Persistence.Repository.Interfaces;
 using ContactsManager.Domain.Models;
+using ContactsManager.Persistence.Help;
 
 namespace ContactsManager.Infrastructure.Extensions
 {
@@ -34,12 +35,23 @@ namespace ContactsManager.Infrastructure.Extensions
             services.AddDbContext<ApplicationDbContext>(builder =>
                 builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(typeof(ApplicationDbContext)
                                           .GetTypeInfo().Assembly.GetName().Name)));
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(
+                //Configure Password Validation
+                opts => {
+                    opts.Password.RequiredLength = 5;
+                    opts.Password.RequireNonAlphanumeric = false;
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                    opts.Password.RequireDigit = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             return services;
         }
+
+        public static IServiceCollection AddDbInitializer(this IServiceCollection services) =>
+            services.AddScoped<IDbInitializer, DbInitializer>();
 
     }
 }

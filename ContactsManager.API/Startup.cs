@@ -1,18 +1,18 @@
+using System;
+using System.Text;
 using Microsoft.Identity.Web;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using Microsoft.IdentityModel.Tokens;
 using ContactsManager.Infrastructure.Extensions;
 using ContactsManager.Persistence;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
+using ContactsManager.Domain;
 
 namespace ContacsManager.API
 {
@@ -34,7 +34,12 @@ namespace ContacsManager.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContactsManager.API", Version = "v1" });
             });
-
+            services.AddSingleton(_ =>
+            {
+                var configure = new AppConfiguration();
+                Configuration.Bind(configure);
+                return configure;
+            });
             services.AddInfrastructure(Configuration.GetConnectionString("DbConnectionStr"));
             services.AddAuthInfrastructure(Configuration.GetConnectionString("DbConnectionAuth"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,10 +51,13 @@ namespace ContacsManager.API
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                            Encoding.UTF8.GetBytes(Configuration["TokenProviderOptions:JwtKey"])),
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            if (Configuration["DbInitializer"] == "true")
+                services.AddDbInitializer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,7 +85,12 @@ namespace ContacsManager.API
             //app.UseMiddleware<JwtMiddleware>();
 
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization(); 
+            
+            if (Configuration["DbInitializer"] == "true")
+                app.AddConfigureDbInitializer();
+            if (Configuration["SeedDataUser"] == "true")
+                app.AddConfigureAuthenticationDb();
 
             app.UseEndpoints(endpoints =>
             {

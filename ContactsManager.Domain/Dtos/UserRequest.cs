@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ContactsManager.API.Dtos
+namespace ContactsManager.Domain.Dto
 {
     public class UserRequest
     {
