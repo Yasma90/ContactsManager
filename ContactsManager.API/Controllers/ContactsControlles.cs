@@ -12,7 +12,6 @@ using Microsoft.Identity.Web.Resource;
 
 namespace ContactsManager.API.Controllers
 {
-    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ContactsController : ControllerBase
@@ -30,6 +29,7 @@ namespace ContactsManager.API.Controllers
 
         // GET: api/Contacts
         [HttpGet]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacs()
         {
             //HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);

@@ -45,7 +45,7 @@ namespace ContactsManager.API.Controllers
 
         [HttpPost("add-admin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
-        public async Task<ActionResult<List<User>>> AdAdminAsync([FromBody]  string userId)
+        public async Task<ActionResult<List<User>>> AddAdminAsync([FromBody]  string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             await _userManager.AddClaimAsync(user, new Claim("Role", "Admin"));
@@ -54,7 +54,7 @@ namespace ContactsManager.API.Controllers
         }
 
         [HttpPost("remove-admin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "isAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<ActionResult<List<User>>> RemoveAdminAsync([FromBody] string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -64,6 +64,7 @@ namespace ContactsManager.API.Controllers
         }
 
         [HttpPost("create-user")]
+        [Authorize]
         public async Task<ActionResult<AuthenticationResponse>> CreateAsync([FromBody] UserRequest request)
         {
             var user = new User { UserName = request.UserName, Email = request.Email, Password = request.Password };
@@ -73,6 +74,8 @@ namespace ContactsManager.API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] UserRequest request)
         {
             var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password,
@@ -80,6 +83,7 @@ namespace ContactsManager.API.Controllers
 
             return result.Succeeded ? await CreateToken(request) : BadRequest("Incorrect Login.");
         }
+
 
         private async Task<AuthenticationResponse> CreateToken(UserRequest request)
         {
